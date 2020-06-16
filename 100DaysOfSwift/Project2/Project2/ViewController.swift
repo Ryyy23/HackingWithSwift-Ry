@@ -83,13 +83,13 @@ class ViewController: UIViewController {
             howManyQuestionsAsked += 1
             print(howManyQuestionsAsked)
             
-        // UIAlert for under 10 questions answered
+        // UIAlert for under 10th questions answered
         if howManyQuestionsAsked <= 9 {
             let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
             present(ac, animated: true)
         }
-        // UIAlert for 10 questions answered
+        // UIAlert for 10th questions answered
         else {
             let youWonAC = UIAlertController(title: "You Won", message: "Your Final Score is: \(score)", preferredStyle: .alert)
             youWonAC.addAction(UIAlertAction(title: "Restart", style: .default, handler: restartGame))
