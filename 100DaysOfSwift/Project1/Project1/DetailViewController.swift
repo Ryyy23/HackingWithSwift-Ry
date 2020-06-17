@@ -24,6 +24,7 @@ class DetailViewController: UIViewController {
         // Remove Large View Title
         navigationItem.largeTitleDisplayMode = .never
         
+        
         if let imageToLoad = selectedImage {
             imageView.image = UIImage(named: imageToLoad)
         }

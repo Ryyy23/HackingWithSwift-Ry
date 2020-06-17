@@ -22,6 +22,8 @@ class ViewController: UITableViewController {
         // Large titles
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(recommendApp))
+        
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
         let items = try! fm.contentsOfDirectory(atPath: path)
@@ -59,8 +61,20 @@ class ViewController: UITableViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
+    // share app
+    @objc func recommendApp() {
+        print("test")
+        
+        // use real itunes web address
+        if let urlStr = NSURL(string: "https://google.com") {
+            let objectsToShare = [urlStr]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
 
+            // needed to stop crashing on ipad.
+            activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
 
+            self.present(activityVC, animated: true, completion: nil)
+        }
+    }
 }
 
