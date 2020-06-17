@@ -55,6 +55,8 @@ class ViewController: UIViewController {
         
         // App title in nav bar
         title = "Select: \(countries[correctAnswer].uppercased()) + Current Score: \(score)"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "score", style: .plain, target: self, action: #selector(fetchScore))
     }
     
     // reset all scores
@@ -97,6 +99,20 @@ class ViewController: UIViewController {
         }
             
     }
+    // fetch score for score button in top right nav bar.
+    @objc func fetchScore() {
+        print("button working")
+        print("Your Current score: \(score)")
+        
+        let currentScoreAC = UIAlertController(title: "Current Score", message: "\(score)", preferredStyle: .alert)
+        currentScoreAC.addAction(UIAlertAction(title: "Continue", style: .default, handler: nil))
+        present(currentScoreAC, animated: true)
+    }
+    
+    
+    
+    
+    
     
 }
 
