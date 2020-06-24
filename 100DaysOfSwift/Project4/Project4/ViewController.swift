@@ -97,6 +97,14 @@ class ViewController: UIViewController, WKNavigationDelegate {
             }
         }
         decisionHandler(.cancel)
+        if let blockedHost = url?.host {
+            print("Site blocked: \(blockedHost)")
+            let ac = UIAlertController(title: "Blocked Website", message: blockedHost, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            present(ac, animated: true)
+        }
+        
+        
     }
     
 
