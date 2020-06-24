@@ -45,9 +45,10 @@ class ViewController: UIViewController, WKNavigationDelegate {
         // Nav Bar Bottom Buttons
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
-        
+        let goBack = UIBarButtonItem(title: "back", style: .plain, target: webView, action: #selector(webView.goBack))
+        let goForward = UIBarButtonItem(title: "forward", style: .plain, target: webView, action: #selector(webView.goForward))
         // Nav Bar Bottom Buttons Array
-        toolbarItems = [progressButton ,spacer, refresh]
+        toolbarItems = [progressButton, spacer, goBack, goForward, refresh]
         // Nav Bar Bottom Displey?
         navigationController?.isToolbarHidden = false
         
@@ -75,6 +76,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
         webView.load(URLRequest(url: url))
         
     }
+    // Shows nav bar title once website has loaded
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         title = webView.title
     }
@@ -96,6 +98,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
                 }
             }
         }
+        // Handles blocker or invalid website urls
         decisionHandler(.cancel)
         if let blockedHost = url?.host {
             print("Site blocked: \(blockedHost)")
