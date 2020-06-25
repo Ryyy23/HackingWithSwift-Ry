@@ -80,6 +80,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
     // Shows nav bar title once website has loaded
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         title = webView.title
+        // Remove Large View Title
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
