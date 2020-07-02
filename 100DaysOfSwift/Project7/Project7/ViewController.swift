@@ -8,21 +8,33 @@
 
 import UIKit
 
+
 class ViewController: UITableViewController {
     
     var petitions = [Petition]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-            // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
-        let urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+        let urlString: String
+
+        //Most Recent Tab
+        if navigationController?.tabBarItem.tag == 0 {
+            // urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+        // Top Rated Tab
+        } else {
+            // urlString = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
+            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+        }
         
         if let url = URL(string: urlString) {
             if let data = try? Data(contentsOf: url){
                 // we're OK to parse!
                 parse(json: data)
+                return
             }
         }
+        showError()
         
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -45,6 +57,16 @@ class ViewController: UITableViewController {
             tableView.reloadData()
         }
         
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailViewController ()
+        vc.detailItem = petitions[indexPath.row]
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    func showError() {
+        let ac = UIAlertController(title: "Loading error", message: "404 cannot load feed", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
     
 
