@@ -62,10 +62,10 @@
 		57A9CF7524ACC19200565369 /* Project7 */ = {
 			isa = PBXGroup;
 			children = (
-				57A9CF9024AE01BD00565369 /* DetailViewController.swift */,
 				57A9CF7624ACC19200565369 /* AppDelegate.swift */,
 				57A9CF7824ACC19200565369 /* SceneDelegate.swift */,
 				57A9CF7A24ACC19200565369 /* ViewController.swift */,
+				57A9CF9024AE01BD00565369 /* DetailViewController.swift */,
 				57A9CF8A24ACCD7600565369 /* Petition.swift */,
 				57A9CF8C24ACCDFF00565369 /* Petitions.swift */,
 				57A9CF7C24ACC19200565369 /* Main.storyboard */,
