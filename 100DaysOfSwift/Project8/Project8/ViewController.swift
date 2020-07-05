@@ -25,6 +25,15 @@ class ViewController: UIViewController {
             scoreLabel.text = "Score: \(score)"
         }
     }
+    var correctAnswerScore = 0 {
+        didSet {
+            if correctAnswerScore == 7 {
+                let ac = UIAlertController(title: "Well done!", message: "are you ready for next level", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
+                present(ac, animated: true)
+            }
+        }
+    }
     var level = 1
     
     override func loadView() {
@@ -144,6 +153,9 @@ class ViewController: UIViewController {
                 // create a new button and give it a big font size
                 let letterButton = UIButton(type: .system)
                 letterButton.titleLabel?.font = UIFont.systemFont(ofSize: 36)
+                // button border
+                letterButton.layer.borderWidth = 1
+                letterButton.layer.borderColor = UIColor.lightGray.cgColor
                 // give button temp text
                 letterButton.setTitle("WWW", for: .normal)
                 // calculate the frame of this button using its column and row
@@ -206,13 +218,35 @@ class ViewController: UIViewController {
             // set answer.text to blank
             currentAnswer.text = ""
             score += 1
+            correctAnswerScore += 1
             
             // if score devides between 7 equally
-            if score % 7 == 0 {
-                let ac = UIAlertController(title: "Well done!", message: "are you ready for next level", preferredStyle: .alert)
-                ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
-                present(ac, animated: true)
-            }
+//            var hiddenBtnCount = 0
+//            for btn in letterButtons {
+//                if btn.isHidden == true {
+//                    hiddenBtnCount += 1
+//                    //print("button clicked")
+//                }
+//                //print("total: \(hiddenBtnCount)")
+//                if hiddenBtnCount == 20 {
+//                    //print("working")
+//                    let ac = UIAlertController(title: "Well done!", message: "are you ready for next level", preferredStyle: .alert)
+//                    ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
+//                    present(ac, animated: true)
+//                }
+//
+//            }
+//            if score % 7 == 0 {
+//                let ac = UIAlertController(title: "Well done!", message: "are you ready for next level", preferredStyle: .alert)
+//                ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
+//                present(ac, animated: true)
+//            }
+        } else {
+            let ac = UIAlertController(title: "Wrong Answer", message: "\(currentAnswer.text ?? "error") is not the correct anwser", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+            score -= 1
+            
         }
         
     }
@@ -291,7 +325,8 @@ class ViewController: UIViewController {
     }
     
     func levelUp(action: UIAlertAction){
-        level += 2
+        level += 1
+        correctAnswerScore = 0
         
         solutions.removeAll(keepingCapacity: true)
         
