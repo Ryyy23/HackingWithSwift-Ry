@@ -22,7 +22,9 @@ class ViewController: UITableViewController ,UISearchResultsUpdating {
         // Old search button
         //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchPetitions))
         setupSearchController()
-        fetchURL()
+
+        performSelector(inBackground: #selector(fetchJSON), with: nil)
+        //fetchJSON()
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -44,31 +46,48 @@ class ViewController: UITableViewController ,UISearchResultsUpdating {
         cell.detailTextLabel?.text = petition.body
         return cell
     }
-    func fetchURL() {
-        let urlString: String
+    @objc func fetchJSON() {
+        var urlString: String
+        switch navigationController?.tabBarItem.tag {
+               case 1:
+                   urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+               default:
+                   urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+               }
 
         //Most Recent Tab
-        if navigationController?.tabBarItem.tag == 0 {
-            // urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
-            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
-        // Top Rated Tab
-        } else {
-            // urlString = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
-            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
-        }
+//            if navigationController?.tabBarItem.tag == 0 {
+//                // urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+//                urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+//            // Top Rated Tab
+//            } else {
+//                // urlString = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
+//                urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+//            }
+
+        
         // push decoding url to .userInitiated thread
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            if let url = URL(string: urlString) {
-                if let data = try? Data(contentsOf: url){
-                    // we're OK to parse!
-                    self?.parse(json: data)
-                    return
-                }
+//        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+//            if let url = URL(string: urlString) {
+//                if let data = try? Data(contentsOf: url){
+//                    // we're OK to parse!
+//                    self?.parse(json: data)
+//                    return
+//                }
+        
+//            }
+//            // put error in .userinitiated thread
+//            self?.showError()
+//        }
+        
+        if let url = URL(string: urlString){
+            if let data = try? Data(contentsOf: url){
+                parse(json: data)
+                return
             }
-            // put error in .userinitiated thread
-            self?.showError()
         }
         
+        performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         
         
         
@@ -78,10 +97,14 @@ class ViewController: UITableViewController ,UISearchResultsUpdating {
         
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitions = jsonPetitions.results
-            // put back in main thread
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
-            }
+//             put back in main thread
+//            DispatchQueue.main.async { [weak self] in
+//                self?.tableView.reloadData()
+//            }
+
+            tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+        }else {
+            performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         }
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -97,13 +120,17 @@ class ViewController: UITableViewController ,UISearchResultsUpdating {
         searchController.searchBar.placeholder = "Type something here to search"
         navigationItem.searchController = searchController
     }
-    func showError() {
+    @objc func showError() {
         // put error UI back into main thread
-        DispatchQueue.main.async { [weak self] in
-            let ac = UIAlertController(title: "Loading error", message: "404 cannot load feed", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(ac, animated: true)
-        }
+//        DispatchQueue.main.async { [weak self] in
+//            let ac = UIAlertController(title: "Loading error", message: "404 cannot load feed", preferredStyle: .alert)
+//            ac.addAction(UIAlertAction(title: "OK", style: .default))
+//            self?.present(ac, animated: true)
+//        }
+        
+        let ac = UIAlertController(title: "Loading error", message: "404 cannot load feed", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
 
     }
     @objc func showCredit() {
