@@ -131,11 +131,21 @@ class ViewController: UITableViewController ,UISearchResultsUpdating {
             return
                 petition.title.lowercased().contains(searchText.lowercased())||petition.body.lowercased().contains(searchText.lowercased())
         })
-        tableView.reloadData()
+        //Update UI on main thread
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.tableView.reloadData()
+        }
+        
     }
     func updateSearchResults(for searchController: UISearchController) {
         if let term = searchController.searchBar.text{
-            filterRowsForSearchedText(term)
+            //Push to another threadIn
+            DispatchQueue.global(qos: .userInitiated).async {
+                [weak self] in
+                self?.filterRowsForSearchedText(term)
+            }
+            
         }
     }
     
