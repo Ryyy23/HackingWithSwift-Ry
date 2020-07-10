@@ -181,7 +181,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLevel()    }
+        // load level on another thread
+        DispatchQueue.global(qos: .userInitiated).async {
+            [weak self] in
+            self?.loadLevel()
+        }
+    }
     
     @objc func letterTapped(_ sender: UIButton){
         // safely unwrap button title
@@ -307,21 +312,26 @@ class ViewController: UIViewController {
                 }
             }
         }
-        // removes white space and new lines (/n)
-        cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
-        answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        letterBits.shuffle()
-        
-        
-        if letterBits.count == letterButtons.count {
-            print("test")
-            // loop through letterButtons.count
-            for i in 0 ..< letterButtons.count {
-                // set Title foreach button with each letter bit per button 1 gets letterbits 1
-                letterButtons[i].setTitle(letterBits[i], for: .normal)
+        // update UI on main thread
+        DispatchQueue.main.async {
+            [weak self] in
+                    // removes white space and new lines (/n)
+            self?.cluesLabel.text = clueString.trimmingCharacters(in: .whitespacesAndNewlines)
+            self?.answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            letterBits.shuffle()
+            
+            
+            if letterBits.count == self?.letterButtons.count {
+                print("test")
+                // loop through letterButtons.count
+                for i in 0 ..< self!.letterButtons.count {
+                    // set Title foreach button with each letter bit per button 1 gets letterbits 1
+                    self?.letterButtons[i].setTitle(letterBits[i], for: .normal)
+                }
             }
         }
+
     }
     
     func levelUp(action: UIAlertAction){
