@@ -16,12 +16,23 @@ class ViewController: UIViewController {
     
     var scoreLabel: UILabel!
     var answerLabel: UILabel!
-    
     var characterButtons = [UIButton]()
+    
+    let width:CGFloat = 100
+    let height:CGFloat = 100
+    
     
     var score = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
+        }
+    }
+    
+    var currentWord: String = "Test"
+    var usedLetters = [String]()
+    var promptWord = "" {
+        didSet{
+            answerLabel.text = "\(promptWord)"
         }
     }
     override func loadView() {
@@ -38,7 +49,7 @@ class ViewController: UIViewController {
         answerLabel = UILabel()
         answerLabel.translatesAutoresizingMaskIntoConstraints = false
         answerLabel.font = UIFont.systemFont(ofSize: 24)
-        answerLabel.text = "ANSWER"
+//        answerLabel.text = "Test"
         answerLabel.numberOfLines = 1
         answerLabel.textAlignment = .center
         answerLabel.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
@@ -49,16 +60,19 @@ class ViewController: UIViewController {
         view.addSubview(buttonsView)
         
         let row1View = UIView()
+        row1View.clipsToBounds = true
         row1View.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(row1View)
+        buttonsView.addSubview(row1View)
         
         let row2View = UIView()
+        row2View.clipsToBounds = true
         row2View.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(row2View)
+        buttonsView.addSubview(row2View)
         
         let row3View = UIView()
+        row3View.clipsToBounds = true
         row3View.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(row3View)
+        buttonsView.addSubview(row3View)
 
         
         NSLayoutConstraint.activate([
@@ -69,39 +83,35 @@ class ViewController: UIViewController {
             answerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             buttonsView.widthAnchor.constraint(equalToConstant: 1000),
-            buttonsView.heightAnchor.constraint(equalToConstant: 320),
+            buttonsView.heightAnchor.constraint(equalToConstant: 300),
             buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonsView.topAnchor.constraint(equalTo: answerLabel.bottomAnchor, constant: 20),
             buttonsView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -20),
             
+            row1View.leftAnchor.constraint(equalTo: buttonsView.leftAnchor),
             row1View.topAnchor.constraint(equalTo: buttonsView.topAnchor),
-//            row1View.centerXAnchor.constraint(equalTo: buttonsView.centerXAnchor),
-            row1View.widthAnchor.constraint(equalToConstant: 25),
-//            row1View.heightAnchor.constraint(equalToConstant: 25),
-            row1View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333),
+            row1View.widthAnchor.constraint(equalTo: buttonsView.widthAnchor),
+            row1View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333, constant: 0),
+            
+            
+            row2View.leftAnchor.constraint(equalTo: buttonsView.leftAnchor),
+            row2View.topAnchor.constraint(equalTo: row1View.bottomAnchor),
+            row2View.widthAnchor.constraint(equalTo: buttonsView.widthAnchor),
+            row2View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333, constant: 0),
+            
+            
+            row3View.leftAnchor.constraint(equalTo: buttonsView.leftAnchor),
+            row3View.topAnchor.constraint(equalTo: row2View.bottomAnchor),
+            row3View.widthAnchor.constraint(equalTo: buttonsView.widthAnchor),
+            row3View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333, constant: 0),
            
             
-            row2View.topAnchor.constraint(equalTo: row1View.bottomAnchor),
-//            row2View.centerXAnchor.constraint(equalTo: buttonsView.centerXAnchor),
-//            row2View.widthAnchor.constraint(equalToConstant: 25),
-//            row2View.heightAnchor.constraint(equalToConstant: 25),
-            row2View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333),
             
-            row3View.topAnchor.constraint(equalTo: row2View.bottomAnchor),
-//            row3View.centerXAnchor.constraint(equalTo: buttonsView.centerXAnchor),
-//            row3View.widthAnchor.constraint(equalToConstant: 25),
-//            row3View.heightAnchor.constraint(equalToConstant: 25),
-            row3View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333),
-            
-            
-            
-            
-            
-            
+        
         ])
         
-        let width = 25
-        let height = 100
+//        let width = 100
+//        let height = 100
         var i = 10
         
         for row in 0..<3 {
@@ -120,56 +130,41 @@ class ViewController: UIViewController {
                 let characterButton = UIButton(type: .system)
                 characterButton.titleLabel?.font = UIFont.systemFont(ofSize: 36)
                 
-                characterButton.layer.borderWidth = 2
+                characterButton.layer.borderWidth = 1
                 characterButton.layer.borderColor = UIColor.lightGray.cgColor
-                
+                characterButton.layer.backgroundColor = UIColor.white.cgColor
                 characterButton.setTitle("#", for: .normal)
-                
-                let frame = CGRect(x: col * width, y: row * height, width: width, height: height)
+
+//                let frame = CGRect(x: col * width, y: row * height, width: width, height: height)
+                let frame = CGRect(x: CGFloat(col) * width, y: 0, width: width, height: height)
+                print(CGFloat(col) * width)
                 characterButton.frame = frame
-                
-                //TODO: make three buttonsViews. one for each row
                 
                 switch row {
                 case 0:
+                    print(row)
                     print("row 1")
                     row1View.addSubview(characterButton)
                 case 1:
+                    print(row)
                     print("row 2")
-                   row2View.addSubview(characterButton)
+                    row2View.addSubview(characterButton)
                 case 2:
+                    print(row)
                     print("row 3")
                     row3View.addSubview(characterButton)
                 default:
+                    print("defualt")
                     return
                 }
                 
                 characterButtons.append(characterButton)
                 
+                
                 characterButton.addTarget(self, action: #selector(characterTapped), for: .touchUpInside)
             }
-            i -= 1
         }
         
-        answerLabel.backgroundColor = .brown
-        buttonsView.backgroundColor = .purple
-        row1View.backgroundColor = .red
-        row2View.backgroundColor = .yellow
-        row3View.backgroundColor = .green
-        
-    }
-    
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        loadLevel()
-    }
-    
-    @objc func characterTapped() {
-        
-    }
-    
-    func loadLevel() {
         var az = [String]()
         for char in "abcdefghijklmnopqrstuvwxyz" {
             az.append(String(char))
@@ -182,12 +177,78 @@ class ViewController: UIViewController {
                 characterButtons[i].setTitle(az[i], for: .normal)
             }
         }
+        
+        
+        
+        
+//       buttonsView.backgroundColor = .purple
+//        row1View.backgroundColor = .red
+//        row2View.backgroundColor = .yellow
+//        row3View.backgroundColor = .green
 
-       //for value in UnicodeScalar("a").value...UnicodeScalar("z").value { print(UnicodeScalar(value)!) }
     }
     
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loadLevel()
+    }
+    
+    @objc func characterTapped(_ sender: UIButton) {
+        print("working")
+        guard let buttonTitle = sender.titleLabel?.text else { return }
+        print("Pressed: \(buttonTitle)")
+//        sender.isHidden = true
+        sender.isEnabled = false
+        usedLetters.append(buttonTitle)
+        checkLetterInWord()
+        
 
+    }
+    func loadLevel() {
+        currentWord = "Answer"
+        checkLetterInWord()
+    }
 
+    func checkLetterInWord() {
+        var newpromptword = ""
+        for letter in currentWord.lowercased() {
+            let strLetter = String(letter)
+            print(strLetter)
+
+            if usedLetters.contains(strLetter) {
+                newpromptword += strLetter
+                print("\(strLetter) is a character in \(currentWord.lowercased())")
+            } else {
+                newpromptword += "?"
+                print("\(strLetter) is not a character in  \(currentWord.lowercased())")
+                }
+        }
+        promptWord = newpromptword
+        print(newpromptword)
+        checkWordIsCorrect()
+        
+    }
+    func checkWordIsCorrect() {
+        // check if answerlabel.text contains no questions marks
+//        guard (answerLabel.text?.contains("?")) == false else { return }
+        if currentWord.lowercased() == answerLabel.text?.lowercased() {
+            print("winner")
+            let ac = UIAlertController(title: "Well done", message: "next round?", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Yes", style: .default, handler: nextWord))
+            ac.addAction(UIAlertAction(title: "No", style: .default, handler: closeApp))
+            
+            present(ac, animated: true)
+        }
+    }
+    @objc func nextWord(action: UIAlertAction) {
+        
+    }
+    
+    @objc func closeApp(action: UIAlertAction) {
+        UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
+
+    }
+    
 }
 
