@@ -187,6 +187,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(score)
+        score = 7
         loadLevel()
     }
     func loadWordFile(){
@@ -201,6 +203,7 @@ class ViewController: UIViewController {
         }
     }
     func newWord(action: UIAlertAction!){
+        score = 7
         let _ = characterButtons.map({$0.isEnabled = true})
         usedLetters.removeAll()
         wordList.shuffle()
@@ -214,6 +217,9 @@ class ViewController: UIViewController {
         print("Pressed: \(buttonTitle)")
 //        sender.isHidden = true
         sender.isEnabled = false
+        if !currentWord.contains(buttonTitle){
+            score -= 1
+        }
         usedLetters.append(buttonTitle)
         checkLetterInWord()
         
