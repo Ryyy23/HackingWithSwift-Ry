@@ -10,10 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    // letterGuess
-    // usedLetters
-    // score/lives
-    
     var scoreLabel: UILabel!
     var answerLabel: UILabel!
     var characterButtons = [UIButton]()
@@ -27,6 +23,8 @@ class ViewController: UIViewController {
             scoreLabel.text = "Score: \(score)"
         }
     }
+    
+    var wordList = [String]()
     
     var currentWord: String = "Test"
     var usedLetters = [String]()
@@ -94,24 +92,22 @@ class ViewController: UIViewController {
             row1View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333, constant: 0),
             
             
-            row2View.leftAnchor.constraint(equalTo: buttonsView.leftAnchor),
+//            row2View.leftAnchor.constraint(equalTo: buttonsView.leftAnchor, constant: 0),
             row2View.topAnchor.constraint(equalTo: row1View.bottomAnchor),
-            row2View.widthAnchor.constraint(equalTo: buttonsView.widthAnchor),
+            row2View.widthAnchor.constraint(equalTo: buttonsView.widthAnchor, multiplier: 0.9),
             row2View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333, constant: 0),
+            row2View.centerXAnchor.constraint(equalTo: buttonsView.centerXAnchor),
             
             
-            row3View.leftAnchor.constraint(equalTo: buttonsView.leftAnchor),
+            
+//            row3View.leftAnchor.constraint(equalTo: buttonsView.leftAnchor),
             row3View.topAnchor.constraint(equalTo: row2View.bottomAnchor),
-            row3View.widthAnchor.constraint(equalTo: buttonsView.widthAnchor),
+            row3View.widthAnchor.constraint(equalTo: buttonsView.widthAnchor, multiplier: 0.7),
             row3View.heightAnchor.constraint(equalTo: buttonsView.heightAnchor, multiplier: 0.333, constant: 0),
+            row3View.centerXAnchor.constraint(equalTo: buttonsView.centerXAnchor)
            
-            
-            
-        
         ])
         
-//        let width = 100
-//        let height = 100
         var i = 10
         
         for row in 0..<3 {
@@ -182,9 +178,9 @@ class ViewController: UIViewController {
         
         
 //       buttonsView.backgroundColor = .purple
-//        row1View.backgroundColor = .red
-//        row2View.backgroundColor = .yellow
-//        row3View.backgroundColor = .green
+        row1View.backgroundColor = .red
+        row2View.backgroundColor = .yellow
+        row3View.backgroundColor = .green
 
     }
     
@@ -193,8 +189,26 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         loadLevel()
     }
+    func loadWordFile(){
+        if let wordFileURL = Bundle.main.url(forResource: "Aspell-wordlist copy", withExtension: "txt"){
+            print(wordFileURL)
+            if let wordFileContents = try? String(contentsOf: wordFileURL) {
+                let words = wordFileContents.components(separatedBy: "\n")
+                wordList = words
+                newWord(action: nil)
+                print("WORKING")
+            }
+        }
+    }
+    func newWord(action: UIAlertAction!){
+        let _ = characterButtons.map({$0.isEnabled = true})
+        usedLetters.removeAll()
+        wordList.shuffle()
+        currentWord = wordList.randomElement()!
+        checkLetterInWord()
+    }
     
-    @objc func characterTapped(_ sender: UIButton) {
+    @objc func characterTapped(sender: UIButton) {
         print("working")
         guard let buttonTitle = sender.titleLabel?.text else { return }
         print("Pressed: \(buttonTitle)")
@@ -206,8 +220,10 @@ class ViewController: UIViewController {
 
     }
     func loadLevel() {
-        currentWord = "Answer"
+//        currentWord = "Answer"
+        loadWordFile()
         checkLetterInWord()
+        
     }
 
     func checkLetterInWord() {
@@ -222,6 +238,7 @@ class ViewController: UIViewController {
             } else {
                 newpromptword += "?"
                 print("\(strLetter) is not a character in  \(currentWord.lowercased())")
+                
                 }
         }
         promptWord = newpromptword
@@ -235,14 +252,11 @@ class ViewController: UIViewController {
         if currentWord.lowercased() == answerLabel.text?.lowercased() {
             print("winner")
             let ac = UIAlertController(title: "Well done", message: "next round?", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Yes", style: .default, handler: nextWord))
+            ac.addAction(UIAlertAction(title: "Yes", style: .default, handler: newWord))
             ac.addAction(UIAlertAction(title: "No", style: .default, handler: closeApp))
             
             present(ac, animated: true)
         }
-    }
-    @objc func nextWord(action: UIAlertAction) {
-        
     }
     
     @objc func closeApp(action: UIAlertAction) {

@@ -13,6 +13,7 @@
 		577FC31824B88B34004248C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 577FC31624B88B34004248C0 /* Main.storyboard */; };
 		577FC31A24B88B35004248C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 577FC31924B88B35004248C0 /* Assets.xcassets */; };
 		577FC31D24B88B35004248C0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 577FC31B24B88B35004248C0 /* LaunchScreen.storyboard */; };
+		577FC33924BC2EB9004248C0 /* Aspell-wordlist copy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 577FC33824BC2EB9004248C0 /* Aspell-wordlist copy.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		577FC31924B88B35004248C0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		577FC31C24B88B35004248C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		577FC31E24B88B35004248C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		577FC33824BC2EB9004248C0 /* Aspell-wordlist copy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Aspell-wordlist copy.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				577FC31224B88B34004248C0 /* SceneDelegate.swift */,
 				577FC31424B88B34004248C0 /* ViewController.swift */,
 				577FC31624B88B34004248C0 /* Main.storyboard */,
+				577FC33824BC2EB9004248C0 /* Aspell-wordlist copy.txt */,
 				577FC31924B88B35004248C0 /* Assets.xcassets */,
 				577FC31B24B88B35004248C0 /* LaunchScreen.storyboard */,
 				577FC31E24B88B35004248C0 /* Info.plist */,
@@ -128,6 +131,7 @@
 				577FC31D24B88B35004248C0 /* LaunchScreen.storyboard in Resources */,
 				577FC31A24B88B35004248C0 /* Assets.xcassets in Resources */,
 				577FC31824B88B34004248C0 /* Main.storyboard in Resources */,
+				577FC33924BC2EB9004248C0 /* Aspell-wordlist copy.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
