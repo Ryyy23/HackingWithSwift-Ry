@@ -14,7 +14,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(cameraOrLibary))
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -39,15 +39,6 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         return cell
     }
-    
-    @objc func addNewPerson() {
-        let picker = UIImagePickerController()
-        picker.allowsEditing = true
-        picker.delegate = self
-        present(picker,animated: true)
-        
-    }
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else {return}
         
@@ -60,10 +51,54 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         let person = Person(name: "Unkown", image: imageName)
         people.append(person)
         collectionView.reloadData()
-        
         dismiss(animated: true)
         
     }
+    @objc func cameraOrLibary() {
+        let picker = UIImagePickerController()
+        let ac = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+        let isCameraAvailable = UIImagePickerController.isSourceTypeAvailable(.camera)
+        let cameraButton = UIAlertAction(title: "Camera", style: .default, handler:{
+            (alert: UIAlertAction!) -> Void in
+            self.openCamera()
+        })
+        let LibaryButton = UIAlertAction(title: "Libary", style: .default, handler:{
+            (alert: UIAlertAction!) -> Void in
+            self.pickimage()
+        })
+        if isCameraAvailable == false {
+            cameraButton.isEnabled = false
+        } else {
+            cameraButton.isEnabled = true
+        }
+        picker.delegate = self
+        ac.addAction(cameraButton)
+        ac.addAction(LibaryButton)
+        ac.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItem
+        self.present(ac, animated: true, completion: nil)
+        }
+    func openCamera(){
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+            let imagePicker = UIImagePickerController()
+            imagePicker.sourceType = .camera
+            imagePicker.delegate = self
+            imagePicker.allowsEditing = true
+            present(imagePicker, animated: true)
+        }
+        
+    }
+    
+    func pickimage(){
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+           let imagePicker = UIImagePickerController()
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.delegate = self
+            imagePicker.allowsEditing = true
+            present(imagePicker, animated: true)
+        }
+        
+    }
+        
     
     func getDocumentDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
