@@ -70,24 +70,50 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         return paths[0]
     }
     
+    @objc func renamePerson(person: Person) {
+        print("renamePerson working")
+            let ac = UIAlertController(title: "Rename person", message: nil, preferredStyle: .alert)
+            ac.addTextField()
+        
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+            ac.addAction(UIAlertAction(title: "Ok", style: .default) {
+                [weak self, weak ac] action in
+                guard let newName = ac?.textFields?[0].text else { return }
+                person.name = newName
+        
+                self?.collectionView.reloadData()
+                })
+        
+            present(ac, animated: true)
+        
+    }
+    
+    @objc func deletePerson(person: Person, index: IndexPath) {
+        print("deletePerson working")
+        people.remove(at: index.item)
+        collectionView.reloadData()
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let person = people[indexPath.item]
         
-        let ac = UIAlertController(title: "Rename person", message: nil, preferredStyle: .alert)
-        ac.addTextField()
+        let ac = UIAlertController(title: "Rename or Delete", message: nil, preferredStyle: .alert)
         
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
-        ac.addAction(UIAlertAction(title: "Ok", style: .default) {
-            [weak self, weak ac] action in
-            guard let newName = ac?.textFields?[0].text else { return }
-            person.name = newName
-            
-            self?.collectionView.reloadData()
-            })
-        
+        let renameButton = UIAlertAction(title: "Rename", style: .default) {
+            [weak self] _ in
+            self?.renamePerson(person: person)
+        }
+        let deleteButton = UIAlertAction(title: "Delete", style: .default) {
+            [weak self] _ in
+            self?.deletePerson(person: person, index: indexPath)
+        }
+        ac.addAction(deleteButton)
+        ac.addAction(renameButton)
         present(ac, animated: true)
+        
     }
+    
     
     
 
