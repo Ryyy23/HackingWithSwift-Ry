@@ -21,7 +21,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let maxAmountofLives = 5
     var ballsLeft = 5 {
         didSet {
-            ballsLeftLabel.text = "Balls Left: \(ballsLeft)"
+            if ballsLeft == 0 {
+                print("Game Over")
+            }
+            
+            ballsLeftLabel.text = "Balls: \(ballsLeft)"
         }
     }
     
@@ -57,7 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         ballsLeftLabel = SKLabelNode(fontNamed: "Chalkduster")
         ballsLeftLabel.text = "Balls: 5"
-        ballsLeftLabel.position = CGPoint(x: 725, y: 700)
+        ballsLeftLabel.position = CGPoint(x: 700, y: 700)
         addChild(ballsLeftLabel)
         
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
@@ -74,7 +78,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         makeBouncer(at: CGPoint(x: 768, y: 0))
         makeBouncer(at: CGPoint(x: 1024, y: 0))
     }
-    
+    var box: SKSpriteNode!
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
@@ -86,7 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if editingMode {
                 // create a box
                 let size = CGSize(width: Int.random(in: 16...128), height: 16)
-                let box = SKSpriteNode(color: UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1), size: size)
+                box = SKSpriteNode(color: UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1), size: size)
                 box.zRotation = CGFloat.random(in: 0...3)
                 box.position = location
                 box.name = "box"
@@ -94,6 +98,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 box.physicsBody = SKPhysicsBody(rectangleOf: box.size)
                 box.physicsBody?.isDynamic = false
                 addChild(box)
+//                guard let someNodeExists = self.childNode(withName: "box") else {return}
+//                print(someNodeExists)
             } else {
                 let ball = SKSpriteNode(imageNamed: ballColour())
                 ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)
@@ -179,13 +185,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         } else if object.name == "bad"  {
             destroy(ball: ball)
             score -= 1
-            if ballsLeft < maxAmountofLives {
-                ballsLeft -= 1
-            }
+            ballsLeft -= 1
         }
     }
     
     func boxDestroy(box: SKNode) {
+        checkNodeExists()
         box.removeFromParent()
     }
     
@@ -209,10 +214,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         if nodeA.name == "box" {
+//            guard let someNodeExists = self.childNode(withName: "box") else {return}
+//            print(someNodeExists)
             boxDestroy(box: nodeA)
+            checkNodeExists()
         } else if nodeB.name == "box" {
-           boxDestroy(box: nodeB)
+//            guard let someNodeExists = self.childNode(withName: "box") else {return}
+//            print(someNodeExists)
+            boxDestroy(box: nodeB)
+            checkNodeExists()
         }
     }
+    
+    func checkNodeExists() {
+        var boxChildrenNodesArray = [SKNode]()
+        let _: Void = self.enumerateChildNodes(withName: "box", using: {
+            (node: SKNode!, stop: UnsafeMutablePointer <ObjCBool>) -> Void in
+            boxChildrenNodesArray.append(node)
+//            print(node!)
+        })
+        if boxChildrenNodesArray.isEmpty && ballsLeft > 0 {
+            // game won
+            print("win")
+        } else if ballsLeft == 0 {
+            // game still in play if balls left or game over/lose
+            print("loss")
+        } else {
+            print("still in game")
+        }
+
+        }
+    // func game over
+    //func won
+    // func menu
+          
+//        guard let someNodeExists = self.childNode(withName: "box") else {return}
+//        for node in someNodeExists {
+//            print(node)
+//        }
+        
+    
     
 }
