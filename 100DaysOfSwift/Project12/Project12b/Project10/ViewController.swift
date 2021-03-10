@@ -15,6 +15,17 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(cameraOrLibary))
+        
+        let defaults = UserDefaults.standard
+        
+        if let savedPeople = defaults.object(forKey: "people") as? Data {
+            let jsonDecoder = JSONDecoder()
+            do {
+                people = try jsonDecoder.decode([Person].self, from: savedPeople)
+            } catch {
+                print("Failed to load people")
+            }
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -27,6 +38,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         }
         let person = people[indexPath.item]
         cell.name.text = person.name
+        cell.name.textColor = .black
         
         let path = getDocumentDirectory().appendingPathComponent(person.image)
         cell.imageView.image = UIImage(contentsOfFile: path.path)
@@ -50,6 +62,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         }
         let person = Person(name: "Unkown", image: imageName)
         people.append(person)
+        save()
         collectionView.reloadData()
         dismiss(animated: true)
         
@@ -116,6 +129,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
                 [weak self, weak ac] action in
                 guard let newName = ac?.textFields?[0].text else { return }
                 person.name = newName
+                self?.save()
         
                 self?.collectionView.reloadData()
                 })
@@ -127,6 +141,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     @objc func deletePerson(person: Person, index: IndexPath) {
         print("deletePerson working")
         people.remove(at: index.item)
+        save()
         collectionView.reloadData()
     }
     
@@ -147,6 +162,16 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         ac.addAction(renameButton)
         present(ac, animated: true)
         
+    }
+    
+    func save() {
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(people) {
+            let defaults = UserDefaults.standard
+            defaults.setValue(savedData, forKey: "people")
+        } else {
+            print("Failed to save people")
+        }
     }
     
     
