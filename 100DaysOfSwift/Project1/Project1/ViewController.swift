@@ -7,14 +7,34 @@
 //
 
 import UIKit
+class Picture: NSObject, Comparable, Codable {
+    static func < (lhs: Picture, rhs: Picture) -> Bool {
+        return lhs.name == rhs.name
+    }
+    
+    static func == (lhs: Picture, rhs: Picture) -> Bool {
+        return lhs.name! < rhs.name!
+    }
+    
+    var name: String?
+    var count: Int?
+    var image: String?
+    
+    init(name: String?, count: Int?, image: String?) {
+        self.name = name
+        self.count = count
+        self.image = image
+    }
+}
 
 class ViewController: UITableViewController {
-
-    var pictures = [String]()
+    var pictures = [Picture]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        GetUserDefualts()
         
         // View Title
         title = "Storm Viewer"
@@ -36,8 +56,10 @@ class ViewController: UITableViewController {
 //            }
 //            self?.pictures.sort()
 //        }
-        performSelector(inBackground: #selector(loadPictures), with: nil)
-        tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+//        performSelector(inBackground: #selector(loadPictures), with: nil)
+//        tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+//        loadPictures()
+//        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,21 +68,53 @@ class ViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
-        cell.textLabel?.text = pictures[indexPath.row]
+        let pic = pictures[indexPath.item]
+        cell.textLabel?.text = pic.name
+        cell.detailTextLabel?.text = String(pic.count ?? 0)
+        cell.detailTextLabel?.textColor = .white
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
-            vc.selectedImage = pictures[indexPath.row]
-            
+            let picture = pictures[indexPath.item]
+//            vc.selectedImage = pic.[indexPath.item]
+            vc.selectedImage = picture.image
             print(indexPath.row + 1)
-            
             vc.selectedPictureNumber = indexPath.row + 1
             vc.totalPictures = pictures.count
-            
+            count(picture:picture )
+
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    func GetUserDefualts() {
+        
+        // UserDefualts
+        let defaults = UserDefaults.standard
+
+        if let savedPictures = defaults.object(forKey: "pictures") as? Data {
+            let jsonDecoder = JSONDecoder()
+            do {
+                pictures = try jsonDecoder.decode([Picture].self, from: savedPictures)
+            } catch {
+                print("Failed to load pictures")
+            }
+        }
+        if pictures.isEmpty {
+            performSelector(inBackground: #selector(loadPictures), with: nil)
+            tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+        }
+        
+    }
+    func count(picture: Picture) {
+        
+        var newCount = picture.count ?? 0
+        newCount += 1
+        picture.count = newCount
+        print("\(picture.name ?? "Error") + \(picture.count ?? 0)")
+        save()
+        tableView.reloadData()
     }
     @objc func loadPictures() {
         let fm = FileManager.default
@@ -69,15 +123,20 @@ class ViewController: UITableViewController {
                    
                    for item in items {
                        if item.hasPrefix("nssl") {
-                           pictures.append(item)
-                       }
+                        print(item)
+                        // remove filename path extension eg: .jpg
+                        let name = (item as NSString).deletingPathExtension
+                        let picture = Picture(name: name, count: 0, image: item)
+                            pictures.append(picture)
+                        }
                    }
-                   pictures.sort()
-        
+        pictures.sort()
+        save()
     }
     // share app
     @objc func recommendApp() {
         print("test")
+        
         
         // use real itunes web address
         if let urlStr = NSURL(string: "https://google.com") {
@@ -90,5 +149,15 @@ class ViewController: UITableViewController {
             self.present(activityVC, animated: true, completion: nil)
         }
     }
+    
+    func save() {
+        let jsonEncoder = JSONEncoder()
+        if let savedData = try? jsonEncoder.encode(pictures) {
+            let defaults = UserDefaults.standard
+            defaults.setValue(savedData, forKey: "pictures")
+        } else {
+            print("Failed to save pictures")
+        }
+        
+    }
 }
-
