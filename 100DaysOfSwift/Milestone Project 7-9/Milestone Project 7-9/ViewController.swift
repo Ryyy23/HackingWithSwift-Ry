@@ -41,12 +41,14 @@ class ViewController: UIViewController {
         scoreLabel.translatesAutoresizingMaskIntoConstraints = false
         scoreLabel.textAlignment = .right
         scoreLabel.font = UIFont.systemFont(ofSize: 24)
+        scoreLabel.textColor = .black
         scoreLabel.text = "Score: 0"
         view.addSubview(scoreLabel)
         
         answerLabel = UILabel()
         answerLabel.translatesAutoresizingMaskIntoConstraints = false
         answerLabel.font = UIFont.systemFont(ofSize: 24)
+        answerLabel.textColor = .black
 //        answerLabel.text = "Test"
         answerLabel.numberOfLines = 1
         answerLabel.textAlignment = .center
