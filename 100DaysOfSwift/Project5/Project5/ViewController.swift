@@ -12,9 +12,11 @@ class ViewController: UITableViewController {
     
     var allWords = [String]()
     var usedWords = [String]()
+    var currentWord = String()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        userDefaults()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "New Game", style: .plain , target: self, action: #selector(startGame))
@@ -28,13 +30,30 @@ class ViewController: UITableViewController {
             allWords = ["silkworm"]
         }
         
-        startGame()
+        
+    }
+    func userDefaults() {
+        let defaults = UserDefaults.standard
+        
+        if let savedCurrentWord = defaults.string(forKey: "currentWord"), let savedUsedWords = defaults.array(forKey: "usedWords") as? [String]   {
+            currentWord = savedCurrentWord
+            print(currentWord)
+            usedWords = savedUsedWords
+            print(usedWords)
+            title = currentWord
+            tableView.reloadData()
+        } else {
+            startGame()
+        }
+        
     }
     
     @objc func startGame() {
-        title = allWords.randomElement()
+        currentWord = allWords.randomElement() ?? "Couldn't fetch new word"
+        title = currentWord
         usedWords.removeAll(keepingCapacity: true)
         tableView.reloadData()
+        save()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -70,6 +89,7 @@ class ViewController: UITableViewController {
                 if isReal(word: lowerAnswer) {
                     
                     usedWords.insert(answer.lowercased(), at: 0)
+                    save()
                     
                     let indexPath = IndexPath(row: 0, section: 0)
                     tableView.insertRows(at: [indexPath], with: .automatic)
@@ -89,11 +109,12 @@ class ViewController: UITableViewController {
             
             showErrorMessage(errorTitle: "Word not possible", errorMessage: "You can't spell '\(lowerAnswer)' from '\(title)'")
         }
+        print("Used words \(usedWords)")
     }
     
     func isOriginal(word: String) -> Bool {
         print(word)
-        print(!usedWords.contains(word))
+//        print(!usedWords.contains(word))
         return !usedWords.contains(word)
     }
     
@@ -131,5 +152,10 @@ class ViewController: UITableViewController {
         let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
+    }
+    func save(){
+        let defaults = UserDefaults.standard
+        defaults.setValue(currentWord, forKey: "currentWord")
+        defaults.setValue(usedWords, forKey: "usedWords")
     }
 }

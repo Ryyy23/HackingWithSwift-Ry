@@ -14,6 +14,7 @@
 		574B1ED924A4C7B600344490 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 574B1ED824A4C7B600344490 /* Assets.xcassets */; };
 		574B1EDC24A4C7B600344490 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 574B1EDA24A4C7B600344490 /* LaunchScreen.storyboard */; };
 		574B1EE424A6320700344490 /* start.txt in Resources */ = {isa = PBXBuildFile; fileRef = 574B1EE324A6320700344490 /* start.txt */; };
+		5775293025FA285C00AAA204 /* SaveGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5775292F25FA285C00AAA204 /* SaveGame.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		574B1EDB24A4C7B600344490 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		574B1EDD24A4C7B600344490 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		574B1EE324A6320700344490 /* start.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = start.txt; sourceTree = "<group>"; };
+		5775292F25FA285C00AAA204 /* SaveGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveGame.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				574B1EDA24A4C7B600344490 /* LaunchScreen.storyboard */,
 				574B1EDD24A4C7B600344490 /* Info.plist */,
 				574B1EE324A6320700344490 /* start.txt */,
+				5775292F25FA285C00AAA204 /* SaveGame.swift */,
 			);
 			path = Project5;
 			sourceTree = "<group>";
@@ -144,6 +147,7 @@
 			files = (
 				574B1ED424A4C7B500344490 /* ViewController.swift in Sources */,
 				574B1ED024A4C7B500344490 /* AppDelegate.swift in Sources */,
+				5775293025FA285C00AAA204 /* SaveGame.swift in Sources */,
 				574B1ED224A4C7B500344490 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,7 +299,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project5;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.Project5-Ry";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -313,7 +317,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project5;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.example.Project5-Ry";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
