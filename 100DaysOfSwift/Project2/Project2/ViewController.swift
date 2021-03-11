@@ -16,12 +16,34 @@ class ViewController: UIViewController {
     
     var countries = [String]()
     var score = 0
+    var highScore = 0
     var correctAnswer = 0
     var howManyQuestionsAsked = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+//        let defaults = UserDefaults.standard
+//        let savedHighScore = defaults.integer(forKey: "highScore")
+//        highScore = savedHighScore
+        
+        let defaults = UserDefaults.standard
+        let savedHighScore = defaults.integer(forKey: "highScore")
+        highScore = savedHighScore
+        print("SavedHighScore: \(savedHighScore)")
+        print("HighScore: \(highScore)")
+        
+//        let defaults = UserDefaults.standard
+        
+//        if let savedHighScore = defaults.integer(forKey: "highScore") {
+//            let jsonDecoder = JSONDecoder()
+//            do {
+//                highScore = try jsonDecoder.decode(highScore?, from: savedHighScore)
+//            } catch {
+//                print("Failed to load highScore")
+//            }
+//
+//        }
         
         // adding countries entries into countries array
         countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "nigeria", "poland", "russia", "spain", "uk", "us"]
@@ -54,7 +76,7 @@ class ViewController: UIViewController {
         button3.setImage(UIImage(named: countries[2]), for: .normal)
         
         // App title in nav bar
-        title = "Select: \(countries[correctAnswer].uppercased()) + Current Score: \(score)"
+        title = "Select:  \(countries[correctAnswer].uppercased()) |  Current Score: \(score) |  Current Round: \(howManyQuestionsAsked) |  High Score: \(highScore)"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "score", style: .plain, target: self, action: #selector(fetchScore))
     }
@@ -90,13 +112,18 @@ class ViewController: UIViewController {
             let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
             present(ac, animated: true)
+            
         }
         // UIAlert for 10th questions answered
         else {
-            let youWonAC = UIAlertController(title: "You Won", message: "Your Final Score is: \(score)", preferredStyle: .alert)
+//            var acMessage = String()
+            let message = saveHighScore()
+            let youWonAC = UIAlertController(title: "You Won", message: message , preferredStyle: .alert)
             youWonAC.addAction(UIAlertAction(title: "Restart", style: .default, handler: restartGame))
             present(youWonAC, animated: true)
+            
         }
+
             
     }
     // fetch score for score button in top right nav bar.
@@ -109,10 +136,27 @@ class ViewController: UIViewController {
         present(currentScoreAC, animated: true)
     }
     
-    
-    
-    
-    
+    func saveHighScore() -> String {
+        var newMessage = String()
+        // check of current game score is higher than savedhighscore
+        if score >= highScore {
+            // set new high score
+            let newHighScore = score
+            print("setting highscore:\(newHighScore)")
+            let defaults = UserDefaults.standard
+            // saved new high score to userDefaults
+            defaults.setValue(newHighScore, forKey: "highScore")
+            newMessage = ("You won! Score: \(score), Your new highscore is: \(newHighScore)!")
+            
+        } else {
+            let currentHighScore = highScore
+            newMessage = ("You won! Score:  \(score), Try betting your current highscore: \(currentHighScore)!!")
+            print("didn't reach new highscore")
+        }
+        return newMessage
+    }
     
 }
+
+//"Your Final Score is: \(score)"
 
