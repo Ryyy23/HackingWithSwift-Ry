@@ -100,11 +100,14 @@ class ViewController: UITableViewController {
             } catch {
                 print("Failed to load pictures")
             }
-        }
-        if pictures.isEmpty {
+        } else {
             performSelector(inBackground: #selector(loadPictures), with: nil)
             tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
         }
+//        if pictures.isEmpty {
+//            performSelector(inBackground: #selector(loadPictures), with: nil)
+//            tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+//        }
         
     }
     func count(picture: Picture) {
