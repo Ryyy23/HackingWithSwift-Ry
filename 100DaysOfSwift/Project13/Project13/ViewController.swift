@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var intensity: UISlider!
+    @IBOutlet var changeFilterBtn: UIButton!
     var currentImage: UIImage!
     
     var context: CIContext!
@@ -60,6 +61,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             popoverController.sourceRect = sender.bounds
             }
         present(ac, animated: true)
+//        sender.setTitle(ac., for: .normal )
     }
 
     
@@ -67,8 +69,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         guard currentImage != nil else { return }
         guard let actionTitle = action.title else { return }
         
-//        print(actionTitle)
-//        changeFilterBtn.self.setTitle(actionTitle, for: .normal)
+        print(actionTitle)
+        changeFilterBtn.setTitle(actionTitle, for: .normal)
         
         currentFilter = CIFilter(name: actionTitle)
         
@@ -96,10 +98,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func save(_ sender: Any) {
         guard let image = imageView.image else {
             // add error no image to save
-//            print("Error no image")
-//            let ac = UIAlertController(title: "Error!", message: "No image to save!", preferredStyle: .alert)
-//            ac.addAction(UIAlertAction(title: "OK", style: .default))
-//            present(ac, animated: true)
+            print("Error no image")
+            let ac = UIAlertController(title: "Error!", message: "No image to save!", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
             return
         }
         
