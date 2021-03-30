@@ -6,8 +6,13 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 class GameScene: SKScene {
+    
+    var goodPenguinSound: AVAudioPlayer?
+    var badPenguinSound: AVAudioPlayer?
+    var gameOverSound: AVAudioPlayer?
     
     var slots = [WhackSlot]()
     var popupTime = 0.85
@@ -19,15 +24,16 @@ class GameScene: SKScene {
             gameScore.text = "Score: \(score)"
         }
     }
-    
+        
     override func didMove(to view: SKView) {
+        loadSoundEffects()
         let background = SKSpriteNode(imageNamed: "whackBackground")
         background.position = CGPoint(x: 512, y: 384)
         background.blendMode = .replace
         background.zPosition = -1
         addChild(background)
         
-        gameScore = SKLabelNode(fontNamed: "Chalkduster")
+        gameScore = SKLabelNode(fontNamed: "GillSans-Bold")
         gameScore.text = "Score: 0"
         gameScore.position = CGPoint(x: 8, y: 8)
         gameScore.horizontalAlignmentMode = .left
@@ -60,7 +66,10 @@ class GameScene: SKScene {
             if node.name == "charFriend" {
                 
                 score -= 5
-                run(SKAction.playSoundFileNamed("whackBad.caf", waitForCompletion: false))
+                goodPenguinSound?.play()
+//                goodPenguinSound?.stop()
+                
+//                run(SKAction.playSoundFileNamed("whackBad.caf", waitForCompletion:true))
                 
             } else if node.name == "charEnemy" {
                 
@@ -68,10 +77,37 @@ class GameScene: SKScene {
                 whackSlot.charNode.yScale = 0.85
                 whackSlot.hit()
                 score += 1
-                run(SKAction.playSoundFileNamed("whack.caf", waitForCompletion: false))
+                badPenguinSound?.play()
+//                badPenguinSound?.stop()
+//                run(SKAction.playSoundFileNamed("whack.caf", waitForCompletion:true))
 
             }
         }
+    }
+    
+    func loadSoundEffects(){
+        
+        guard let goodPenguinSoundURL = Bundle.main.url(forResource: "whack", withExtension: "caf") else {
+            print("Error Good penguin sound")
+            return
+        }
+        guard let badPenguinSoundURL = Bundle.main.url(forResource: "whackBad", withExtension: "caf") else {
+            print("Error Bad penguin sound")
+            return
+        }
+        guard let gameOverSoundURL = Bundle.main.url(forResource: "gameOverSound", withExtension: "mp3") else {
+            print("Error Game over sound")
+            return
+        }
+        do {
+            goodPenguinSound = try AVAudioPlayer(contentsOf: goodPenguinSoundURL)
+            badPenguinSound = try AVAudioPlayer(contentsOf: badPenguinSoundURL)
+            gameOverSound = try AVAudioPlayer(contentsOf: gameOverSoundURL)
+        } catch {
+            print("Error")
+            return
+        }
+
     }
     
     func createSlot(at position: CGPoint) {
@@ -94,6 +130,17 @@ class GameScene: SKScene {
             gameOver.position = CGPoint(x: 512, y: 384)
             gameOver.zPosition = 1
             addChild(gameOver)
+            gameOverSound?.play()
+//            gameOverSound?.stop()
+//            run(SKAction.playSoundFileNamed("gameOverSound.mp3", waitForCompletion: true))
+            
+            let finalScoreLabel = SKLabelNode(fontNamed: "GillSans-Bold")
+            finalScoreLabel.text = "Final Score: \(score)"
+            finalScoreLabel.fontSize = 48
+            finalScoreLabel.position = CGPoint(x: 512, y: 300)
+            finalScoreLabel.zPosition = 1
+            addChild(finalScoreLabel)
+            
             return
         }
         
