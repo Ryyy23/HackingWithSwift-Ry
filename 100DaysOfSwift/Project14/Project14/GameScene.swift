@@ -58,9 +58,11 @@ class GameScene: SKScene {
         
         for node in tappedNodes {
             
+            // SpriteNode -> CropNode -> WackSlot -> Screen
             guard let whackSlot = node.parent?.parent as? WhackSlot else { continue }
             if !whackSlot.isVisable { continue }
             if whackSlot.isHit { continue }
+            smokeParticles(whackSlot: whackSlot)
             whackSlot.hit()
             
             if node.name == "charFriend" {
@@ -82,6 +84,25 @@ class GameScene: SKScene {
 //                run(SKAction.playSoundFileNamed("whack.caf", waitForCompletion:true))
 
             }
+        }
+    }
+    
+    func smokeParticles(whackSlot: SKNode){
+        if let smokeParticles = SKEmitterNode(fileNamed: "smokeParticle") {
+            smokeParticles.position = whackSlot.position
+            smokeParticles.zPosition = 1
+            addChild(smokeParticles)
+            print("Working")
+            
+        }
+    }
+    func mudParticles(whackSlot: SKNode){
+        if let mudParticles = SKEmitterNode(fileNamed: "mudParticle") {
+            mudParticles.position = whackSlot.position
+            mudParticles.zPosition = 1
+            addChild(mudParticles)
+            print("Working")
+                
         }
     }
     

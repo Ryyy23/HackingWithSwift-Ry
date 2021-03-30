@@ -46,6 +46,13 @@ class WhackSlot: SKNode {
         isVisable = true
         isHit = false
         
+        if let mudParticles = SKEmitterNode(fileNamed: "mudParticle") {
+            mudParticles.position = charNode.position
+            mudParticles.run(SKAction.moveBy(x: 0, y: 65, duration: 0))
+            mudParticles.zPosition = 1
+            addChild(mudParticles)
+        }
+        
         if Int.random(in: 0...2) == 0 {
             charNode.texture = SKTexture(imageNamed: "penguinGood")
             charNode.name = "charFriend"
@@ -59,6 +66,7 @@ class WhackSlot: SKNode {
 
         }
     }
+    
     
     func hide() {
         if !isVisable { return }
