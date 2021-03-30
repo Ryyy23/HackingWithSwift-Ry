@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5755C829261193F000861E9A /* WhackSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5755C828261193F000861E9A /* WhackSlot.swift */; };
 		577CB3F1260EE33F00161D19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577CB3F0260EE33F00161D19 /* AppDelegate.swift */; };
 		577CB3F3260EE33F00161D19 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 577CB3F2260EE33F00161D19 /* GameScene.sks */; };
-		577CB3F5260EE33F00161D19 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 577CB3F4260EE33F00161D19 /* Actions.sks */; };
 		577CB3F7260EE33F00161D19 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577CB3F6260EE33F00161D19 /* GameScene.swift */; };
 		577CB3F9260EE33F00161D19 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577CB3F8260EE33F00161D19 /* GameViewController.swift */; };
 		577CB3FC260EE33F00161D19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 577CB3FA260EE33F00161D19 /* Main.storyboard */; };
@@ -17,10 +17,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5755C828261193F000861E9A /* WhackSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhackSlot.swift; sourceTree = "<group>"; };
 		577CB3ED260EE33F00161D19 /* Project14.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project14.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		577CB3F0260EE33F00161D19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		577CB3F2260EE33F00161D19 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		577CB3F4260EE33F00161D19 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		577CB3F6260EE33F00161D19 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		577CB3F8260EE33F00161D19 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		577CB3FB260EE33F00161D19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -60,12 +60,12 @@
 			children = (
 				577CB3F0260EE33F00161D19 /* AppDelegate.swift */,
 				577CB3F2260EE33F00161D19 /* GameScene.sks */,
-				577CB3F4260EE33F00161D19 /* Actions.sks */,
 				577CB3F6260EE33F00161D19 /* GameScene.swift */,
 				577CB3F8260EE33F00161D19 /* GameViewController.swift */,
 				577CB3FA260EE33F00161D19 /* Main.storyboard */,
 				577CB3FD260EE34000161D19 /* Assets.xcassets */,
 				577CB3FF260EE34000161D19 /* Info.plist */,
+				5755C828261193F000861E9A /* WhackSlot.swift */,
 			);
 			path = Project14;
 			sourceTree = "<group>";
@@ -130,7 +130,6 @@
 				577CB3FC260EE33F00161D19 /* Main.storyboard in Resources */,
 				577CB3F3260EE33F00161D19 /* GameScene.sks in Resources */,
 				577CB3FE260EE34000161D19 /* Assets.xcassets in Resources */,
-				577CB3F5260EE33F00161D19 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +142,7 @@
 			files = (
 				577CB3F7260EE33F00161D19 /* GameScene.swift in Sources */,
 				577CB3F9260EE33F00161D19 /* GameViewController.swift in Sources */,
+				5755C829261193F000861E9A /* WhackSlot.swift in Sources */,
 				577CB3F1260EE33F00161D19 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
