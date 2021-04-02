@@ -66,6 +66,7 @@ class ViewController: UIViewController {
         currentAnswer = UITextField()
         currentAnswer.translatesAutoresizingMaskIntoConstraints = false
         currentAnswer.placeholder = "Tap letters to guess"
+        currentAnswer.textColor = .black
         currentAnswer.textAlignment = .center
         currentAnswer.font = UIFont.systemFont(ofSize: 44)
         currentAnswer.isUserInteractionEnabled = false
@@ -196,7 +197,15 @@ class ViewController: UIViewController {
         //appends button to the activatedButtons array
         activatedButtons.append(sender)
         // hides button when tapped
-        sender.isHidden = true
+//        sender.isHidden = true
+        UIView.animateKeyframes(withDuration: 1, delay: 0, options: [],
+            animations: {
+                sender.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                sender.alpha = 0
+            }) {
+            finished in
+            sender.isHidden = true
+        }
         
     }
     
@@ -213,13 +222,13 @@ class ViewController: UIViewController {
             
             // split answerlabel text by new line (/n)
             var splitAnswers = answersLabel.text?.components(separatedBy: "\n")
-            print(splitAnswers)
+//            print(splitAnswers)
             // replace answerlabel text with answet text at it's correct position within the array
             splitAnswers?[solutionPosition] = answerText
             print(answerText)
             // join up answerlabels into array with /n (new line for each element
             answersLabel.text = splitAnswers?.joined(separator: "\n")
-            print(answersLabel.text)
+//            print(answersLabel.text)
             // set answer.text to blank
             currentAnswer.text = ""
             score += 1
@@ -251,7 +260,6 @@ class ViewController: UIViewController {
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
             score -= 1
-            
         }
         
     }
@@ -263,6 +271,8 @@ class ViewController: UIViewController {
         // reset all btns in activatedButtons
         for btn in activatedButtons {
             btn.isHidden = false
+            btn.alpha = 1
+            btn.transform = .identity
         }
         
         activatedButtons.removeAll()
