@@ -59,11 +59,9 @@ class ViewController: UIViewController {
         button3.layer.borderColor = UIColor.lightGray.cgColor
 
         askQuestion(action: nil)
-        
     }
     
     func askQuestion(action: UIAlertAction!) {
-        
         // shuffling countries in countries array
         countries.shuffle()
         
@@ -74,10 +72,9 @@ class ViewController: UIViewController {
         button1.setImage(UIImage(named: countries[0]), for: .normal)
         button2.setImage(UIImage(named: countries[1]), for: .normal)
         button3.setImage(UIImage(named: countries[2]), for: .normal)
-        
         // App title in nav bar
-        title = "Select:  \(countries[correctAnswer].uppercased()) |  Current Score: \(score) |  Current Round: \(howManyQuestionsAsked) |  High Score: \(highScore)"
         
+        title = "Select:  \(countries[correctAnswer].uppercased()) |  Current Score: \(score) |  Current Round: \(howManyQuestionsAsked) |  High Score: \(highScore)"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "score", style: .plain, target: self, action: #selector(fetchScore))
     }
     
@@ -86,7 +83,6 @@ class ViewController: UIViewController {
         score = 0
         correctAnswer = 0
         howManyQuestionsAsked = 0
-        
         askQuestion(action: nil)
     }
 
@@ -101,7 +97,6 @@ class ViewController: UIViewController {
             } else {
                 title = "Wrong! Correct Flag is: \(countries[correctAnswer].uppercased())"
                 score -= 1
-                
             }
         // counting how many questions have been answered
             howManyQuestionsAsked += 1
@@ -112,7 +107,6 @@ class ViewController: UIViewController {
             let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
             present(ac, animated: true)
-            
         }
         // UIAlert for 10th questions answered
         else {
@@ -123,8 +117,6 @@ class ViewController: UIViewController {
             present(youWonAC, animated: true)
             
         }
-
-            
     }
     // fetch score for score button in top right nav bar.
     @objc func fetchScore() {
@@ -155,8 +147,5 @@ class ViewController: UIViewController {
         }
         return newMessage
     }
-    
 }
-
-//"Your Final Score is: \(score)"
 
