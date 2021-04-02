@@ -89,6 +89,11 @@ class ViewController: UIViewController {
     @IBAction func buttonTapped(_ sender: UIButton) {
         var title: String
         
+        // button animation
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [], animations: {
+            sender.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        })
+        
         // correct answer
             if sender.tag == correctAnswer {
                 title = "Correct"
@@ -107,6 +112,9 @@ class ViewController: UIViewController {
             let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
             present(ac, animated: true)
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [], animations: {
+                sender.transform = CGAffineTransform(scaleX: 1, y: 1)
+            })
         }
         // UIAlert for 10th questions answered
         else {
@@ -115,6 +123,9 @@ class ViewController: UIViewController {
             let youWonAC = UIAlertController(title: "You Won", message: message , preferredStyle: .alert)
             youWonAC.addAction(UIAlertAction(title: "Restart", style: .default, handler: restartGame))
             present(youWonAC, animated: true)
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 5, options: [], animations: {
+                sender.transform = CGAffineTransform(scaleX: 1, y: 1)
+            })
             
         }
     }
