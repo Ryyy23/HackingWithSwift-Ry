@@ -135,8 +135,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         if let cgImage = context.createCGImage(outputImage, from: outputImage.extent){
             let processedImage = UIImage(cgImage: cgImage)
-            imageView.image = processedImage
+//            imageView.image = processedImage
+            imageAnimations(image: processedImage)
         }
+    }
+    
+    func imageAnimations(image: UIImage) {
+        self.imageView.alpha = 0
+        UIView.animateKeyframes(withDuration: 1, delay: 0, options: [], animations: {
+            self.imageView.alpha = 1
+            self.imageView.image = image
+            }) 
     }
 }
 
