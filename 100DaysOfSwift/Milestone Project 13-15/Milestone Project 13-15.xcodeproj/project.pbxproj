@@ -13,6 +13,7 @@
 		571157372617CE6A003B3CD9 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571157362617CE6A003B3CD9 /* GameViewController.swift */; };
 		5711573A2617CE6A003B3CD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 571157382617CE6A003B3CD9 /* Main.storyboard */; };
 		5711573C2617CE6B003B3CD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5711573B2617CE6B003B3CD9 /* Assets.xcassets */; };
+		571157462617E430003B3CD9 /* TargetSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571157452617E430003B3CD9 /* TargetSlot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		571157392617CE6A003B3CD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5711573B2617CE6B003B3CD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5711573D2617CE6B003B3CD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		571157452617E430003B3CD9 /* TargetSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetSlot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				571157302617CE6A003B3CD9 /* GameScene.sks */,
 				571157342617CE6A003B3CD9 /* GameScene.swift */,
 				571157362617CE6A003B3CD9 /* GameViewController.swift */,
+				571157452617E430003B3CD9 /* TargetSlot.swift */,
 				571157382617CE6A003B3CD9 /* Main.storyboard */,
 				5711573B2617CE6B003B3CD9 /* Assets.xcassets */,
 				5711573D2617CE6B003B3CD9 /* Info.plist */,
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				571157462617E430003B3CD9 /* TargetSlot.swift in Sources */,
 				571157352617CE6A003B3CD9 /* GameScene.swift in Sources */,
 				571157372617CE6A003B3CD9 /* GameViewController.swift in Sources */,
 				5711572F2617CE6A003B3CD9 /* AppDelegate.swift in Sources */,
