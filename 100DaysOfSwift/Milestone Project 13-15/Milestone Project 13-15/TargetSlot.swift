@@ -11,50 +11,32 @@ import SpriteKit
 class TargetSlot: SKNode {
     var targetNode: SKSpriteNode!
     
-    var row = 0
+    var row: Int!
+    var texture: SKTexture!
+    var trait: String!
+    var scale: CGFloat!
+    var moveSpeed: Int!
     
-    var isVisable = false
-    var isHit = false
 
-    
-    func configure(at position: CGPoint, row: Int) {
+//    func configure(at position: CGPoint, row: Int, texture: SKTexture, triat: String, scale: CGFloat) {
+    func configure(at position: CGPoint, row: Int, texture: SKTexture, trait: String, scale: CGFloat, moveSpeed: Int){
         self.position = position
         self.row = row
-        
-        let randomNum = Int.random(in: 1...6)
-        switch randomNum {
-        case 1:
-            targetNode = SKSpriteNode(imageNamed: "brownduck")
-            targetNode.name = "good"
-            targetNode.setScale(0.2)
-        case 2:
-            targetNode = SKSpriteNode(imageNamed: "duck")
-            targetNode.name = "good"
-            targetNode.setScale(0.2)
-        case 3:
-            targetNode = SKSpriteNode(imageNamed: "frog")
-            targetNode.name = "good"
-            targetNode.setScale(0.4)
-        case 4:
-            targetNode = SKSpriteNode(imageNamed: "crocodile")
-            targetNode.name = "bad"
-            targetNode.setScale(0.3)
-        case 5:
-            targetNode = SKSpriteNode(imageNamed: "posionapple")
-            targetNode.name = "bad"
-            targetNode.setScale(0.2)
-        case 6:
-            targetNode = SKSpriteNode(imageNamed: "target")
-            targetNode.name = "bad"
-            targetNode.setScale(0.2)
-        default:
-            return
-        }
+        self.texture = texture
+        self.trait = trait
+        self.scale = scale
+        self.moveSpeed =  moveSpeed
+//        print(position, row, texture, triat, scale)
+        targetNode = SKSpriteNode(texture: texture)
+        targetNode.name = trait
+        targetNode.setScale(scale)
         
         targetNode.position = position
         addChild(targetNode)
-        
-        
-        
+    }
+    
+    func removeEnemy() {
+        targetNode.removeFromParent()
+        targetNode.removeAllActions()
     }
 }
