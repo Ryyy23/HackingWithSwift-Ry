@@ -15,17 +15,14 @@ class TargetSlot: SKNode {
     var texture: SKTexture!
     var trait: String!
     var scale: CGFloat!
-    var moveSpeed: Int!
-    
 
 //    func configure(at position: CGPoint, row: Int, texture: SKTexture, triat: String, scale: CGFloat) {
-    func configure(at position: CGPoint, row: Int, texture: SKTexture, trait: String, scale: CGFloat, moveSpeed: Int){
+    func configure(at position: CGPoint, row: Int, texture: SKTexture, trait: String, scale: CGFloat){
         self.position = position
         self.row = row
         self.texture = texture
         self.trait = trait
         self.scale = scale
-        self.moveSpeed =  moveSpeed
 //        print(position, row, texture, triat, scale)
         targetNode = SKSpriteNode(texture: texture)
         targetNode.name = trait

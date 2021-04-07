@@ -10,7 +10,7 @@ import GameplayKit
 
 
 class GameScene: SKScene {
-    
+     
     var gameScore: SKLabelNode!
     var countdownLabel: SKLabelNode!
     var bulletsLeftLabel: SKLabelNode!
@@ -27,7 +27,7 @@ class GameScene: SKScene {
     
     let rowDistribution = GKShuffledDistribution(lowestValue: 1, highestValue: 3)
     let textureDistribution = GKShuffledDistribution(lowestValue: 1, highestValue: 6)
-    let moveSpeedDistribution = GKRandomDistribution(lowestValue: 20, highestValue: 50)
+    let moveSpeedDistribution = GKRandomDistribution(lowestValue: 150, highestValue: 250)
     
     var gameInProgress = true
     
@@ -85,10 +85,10 @@ class GameScene: SKScene {
         bulletsLeftLabel.zPosition = 1
         addChild(bulletsLeftLabel)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            [weak self] in
-            self?.moveTargets()
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//            [weak self] in
+//            self?.moveTargets()
+//        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             [weak self] in
             self?.createEnemy()
@@ -105,7 +105,6 @@ class GameScene: SKScene {
         let location = touch.location(in: self)
         let tappedNodes = nodes(at: location)
         
-//         all touches count as a shoot
         bulletsLeft -= 1
         
         for node in tappedNodes {
@@ -129,20 +128,27 @@ class GameScene: SKScene {
         }
     }
     
-    func createTarget(at position: CGPoint, row: Int, texture: SKTexture, trait: String, scale: CGFloat, moveSpeed: Int){
+    func createTarget(at position: CGPoint, row: Int, texture: SKTexture, trait: String, scale: CGFloat, endpoint: CGPoint){
         let slot = TargetSlot()
         //        print(position, row, texture, trait, scale)
-        slot.configure(at: position, row: row, texture: texture, trait: trait, scale: scale, moveSpeed: moveSpeed)
+        slot.configure(at: position, row: row, texture: texture, trait: trait, scale: scale)
         addChild(slot)
         slots.append(slot)
+        let speed = CGFloat(moveSpeedDistribution.nextInt())
+        let moveObject = SKAction.move(to: endpoint, duration: getDuration(pointA: slot.position, pointB:endpoint, speed:speed))
+        if gameInProgress == false {
+            slot.removeAllActions()
+        } else {
+            slot.run(moveObject){  [ weak self] in
+                self?.removeTarget()
+            }
+        }
     }
     
-    //    var previousNumber = 0
     func createEnemy(){
         var texture: SKTexture
         var trait: String
         var scale: CGFloat
-        var moveSpeed: Int
         //        let randomNum = Int.random(in: 1...6)
         let randomNum = textureDistribution.nextInt()
         switch randomNum {
@@ -174,87 +180,78 @@ class GameScene: SKScene {
             return
         }
         
-        //        let randomNumber = Int.random(in: 1...3)
-        //        if previousNumber == 0 {
-        //            previousNumber = randomNumber
-        //        } else if previousNumber == randomNumber {
-        //
-        //        }
         let randomNumber = rowDistribution.nextInt()
-        moveSpeed = moveSpeedDistribution.nextInt()
         switch randomNumber {
         case 1:
-            createTarget(at: CGPoint(x: -50, y: 100), row: 1, texture: texture, trait: trait, scale: scale, moveSpeed: moveSpeed)
+            let endpoint = CGPoint(x: 1150, y: 100)
+            createTarget(at: CGPoint(x: -50, y: 100), row: 1, texture: texture, trait: trait, scale: scale, endpoint: endpoint)
         case 2:
-            createTarget(at: CGPoint(x: 550, y: 200), row: 2, texture: texture, trait: trait, scale: scale, moveSpeed: moveSpeed)
+            let endpoint = CGPoint(x: -650, y: 200)
+            createTarget(at: CGPoint(x: 550, y: 200), row: 2, texture: texture, trait: trait, scale: scale, endpoint: endpoint)
         case 3:
-            createTarget(at: CGPoint(x: -50, y: 300), row: 3, texture: texture, trait: trait, scale: scale, moveSpeed: moveSpeed)
+            let endpoint = CGPoint(x: 1150, y: 300)
+            createTarget(at: CGPoint(x: -50, y: 300), row: 3, texture: texture, trait: trait, scale: scale, endpoint: endpoint)
         default:
             return
         }
         //        print("created at: \(randomNumber)")
         
         if gameInProgress == true {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 [weak self] in
                 self?.createEnemy()
             }
         }
     }
     
-    func moveTargets(){
+    func getDuration(pointA: CGPoint, pointB: CGPoint, speed: CGFloat) -> TimeInterval{
+        let xDist = (pointB.x - pointA.x)
+        let yDist = (pointB.y - pointA.y)
+        let distance = sqrt((xDist * xDist) + (yDist * yDist));
+        let duration: TimeInterval = TimeInterval(distance/speed)
+        return duration
+        
+    }
+    
+    func removeTarget(){
         for (index, element) in slots.enumerated() {
             if element.position .x >= 1150 || element.position .x <= -650 {
-//                //                print(slots.count)
                 element.removeEnemy()
                 element.removeFromParent()
                 slots.remove(at: index)
-//                //                print(slots.count)
-            } else {
-                let moveSpeed: Int = element.moveSpeed
-                let moveSpeedNegative: Int = -moveSpeed
-                if element.row == 1 || element.row == 3 {
-                    let moveSpeedFloat = CGFloat(moveSpeed)
-                    element.run(SKAction.moveBy(x: moveSpeedFloat, y: 0, duration: 0.5))
-                } else {
-                    let moveSpeedFloat = CGFloat(moveSpeedNegative)
-                    element.run(SKAction.moveBy(x:moveSpeedFloat , y: 0, duration: 0.5))
-                }
-            }
-        }
-        
-        
-        
-        //        for i in 0 ..< slots.count {
-        ////            print("count: \(i)")
-        //
-        //            if slots[i].row == 1 || slots[i].row == 3 {
-        //                slots[i].self.run(SKAction.moveBy(x: 20, y: 0, duration: 0.5))
-        ////                print("row: \(slots[i].row)")
-        //            } else {
-        //                slots[i].self.run(SKAction.moveBy(x: -20, y: 0, duration: 0.5))
-        ////                print("row: \(slots[i].row)")
-        //
-        //            }
-        //
-        //            if slots[i].position .x >= 1100 || slots[i].position .x <= -600  {
-        ////                print(slots.count)
-        //                slots[i].removeEnemy()
-        //                slots[i].removeFromParent()
-        //                print(i)
-        //                print(slots.count)
-        //                print(slots[i])
-        //                slots.remove(at: i)
-        //                print(slots.count)
-        //            }
-        //        }
-        if gameInProgress == true {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                [weak self] in
-                self?.moveTargets()
             }
         }
     }
+        
+//    func moveTargets(){
+//        for (index, element) in slots.enumerated() {
+//            if element.position .x >= 1150 || element.position .x <= -650 {
+//                element.removeEnemy()
+//                element.removeFromParent()
+//                slots.remove(at: index)
+//            } else {
+//                let moveSpeed: Int = element.moveSpeed
+//                let moveSpeedNegative: Int = -moveSpeed
+//                let moveSpeedFloat = CGFloat(moveSpeed)
+//                let moveSpeedFloatNegative = CGFloat(moveSpeedNegative)
+//
+//                if element.row == 1 || element.row == 3 {
+////                    element.run(SKAction.speed(by: 1, duration: 20))
+//                    element.run(SKAction.moveBy(x: 1500, y: 0, duration: 20.0))
+//                } else {
+////                    element.run(SKAction.speed(by: 1, duration: 20))
+//                    element.run(SKAction.moveBy(x: -1500, y: 0, duration: 20.0))
+//                }
+//            }
+//        }
+//
+//        if gameInProgress == true {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+//                [weak self] in
+//                self?.moveTargets()
+//            }
+//        }
+//    }
     
     @objc func onTimerFires() {
         timeLeft -= 1
@@ -268,6 +265,10 @@ class GameScene: SKScene {
     func gameOver() {
         gameInProgress = false
         
+        for (index, element) in slots.enumerated() {
+            element.removeAllActions()
+        }
+        
         let gameOver = SKSpriteNode(imageNamed: "gameOver")
         gameOver.position = CGPoint(x: 512, y: 384)
         gameOver.zPosition = 1
@@ -279,12 +280,9 @@ class GameScene: SKScene {
         finalScoreLabel.fontSize = 48
         finalScoreLabel.zPosition = 1
         addChild(finalScoreLabel)
-        
     }
-    
+
     @objc func reloadBullets() {
-        
-        
         
         bulletsLeft = 6
         
