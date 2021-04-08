@@ -10,20 +10,30 @@ import GameplayKit
 
 
 class GameScene: SKScene {
-     
+    
     var gameScore: SKLabelNode!
     var countdownLabel: SKLabelNode!
     var bulletsLeftLabel: SKLabelNode!
     var reloadButton: UIButton!
+    var bullets: SKSpriteNode!
     
     var slots = [TargetSlot]()
     
     let brownDuckTexture = SKTexture(imageNamed: "brownduck")
-    let duckTexture = SKTexture(imageNamed: "duck")
+    let elephantTexture = SKTexture(imageNamed: "elephant")
     let frogTexture = SKTexture(imageNamed: "frog")
-    let crocodileTexture = SKTexture(imageNamed: "crocodile")
+    let pufferFishTexture = SKTexture(imageNamed: "pufferfish")
     let posionAppleTexture = SKTexture(imageNamed: "posionapple")
     let targetTexture = SKTexture(imageNamed: "target")
+    
+    
+    let bullets1Texture = SKTexture(imageNamed: "bullets1")
+    let bullets2Texture = SKTexture(imageNamed: "bullets2")
+    let bullets3Texture = SKTexture(imageNamed: "bullets3")
+    let bullets4Texture = SKTexture(imageNamed: "bullets4")
+    let bullets5Texture = SKTexture(imageNamed: "bullets5")
+    let bullets6Texture = SKTexture(imageNamed: "bullets6")
+    let reloadTexture = SKTexture(imageNamed: "reload")
     
     let rowDistribution = GKShuffledDistribution(lowestValue: 1, highestValue: 3)
     let textureDistribution = GKShuffledDistribution(lowestValue: 1, highestValue: 6)
@@ -39,7 +49,24 @@ class GameScene: SKScene {
     
     var bulletsLeft = 6 {
         didSet {
-            bulletsLeftLabel.text = "Bullets: \(bulletsLeft)"
+            switch bulletsLeft {
+            case 0:
+                bullets.texture = reloadTexture
+            case 1:
+                bullets.texture = bullets1Texture
+            case 2:
+                bullets.texture = bullets2Texture
+            case 3:
+                bullets.texture = bullets3Texture
+            case 4:
+                bullets.texture = bullets4Texture
+            case 5:
+                bullets.texture = bullets5Texture
+            case 6:
+                bullets.texture = bullets6Texture
+            default:
+                return
+            }
         }
     }
     
@@ -55,10 +82,11 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
-        let background = SKSpriteNode(imageNamed: "251204.png")
+        let background = SKSpriteNode(imageNamed: "background.png")
         background.position = CGPoint(x: 512, y: 384)
         background.blendMode = .replace
         background.zPosition = -1
+        background.setScale(0.4)
         addChild(background)
         
         gameScore = SKLabelNode(fontNamed: "GillSans-Bold")
@@ -77,18 +105,22 @@ class GameScene: SKScene {
         countdownLabel.zPosition = 1
         addChild(countdownLabel)
         
-        bulletsLeftLabel = SKLabelNode(fontNamed: "GillSans-Bold")
-        bulletsLeftLabel.text = "Bullets: 6"
-        bulletsLeftLabel.position = CGPoint(x: 475, y: 8)
-        bulletsLeftLabel.horizontalAlignmentMode = .left
-        bulletsLeftLabel.fontSize = 48
-        bulletsLeftLabel.zPosition = 1
-        addChild(bulletsLeftLabel)
+        //        bulletsLeftLabel = SKLabelNode(fontNamed: "GillSans-Bold")
+        //        bulletsLeftLabel.text = "Bullets: 6"
+        //        bulletsLeftLabel.position = CGPoint(x: 475, y: 8)
+        //        bulletsLeftLabel.horizontalAlignmentMode = .left
+        //        bulletsLeftLabel.fontSize = 48
+        //        bulletsLeftLabel.zPosition = 1
+        //        addChild(bulletsLeftLabel)
         
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//            [weak self] in
-//            self?.moveTargets()
-//        }
+        bullets = SKSpriteNode(texture: bullets6Texture)
+        bullets.position = CGPoint(x: 550, y: 75)
+        bullets.name = "bullets"
+        //        bullets.blendMode = .replace
+        bullets.zPosition = 1
+        bullets.setScale(1)
+        addChild(bullets)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             [weak self] in
             self?.createEnemy()
@@ -98,23 +130,28 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if bulletsLeft <= 0 {
-            return
-        }
+        //        if bulletsLeft <= 0 {
+        //            return
+        //        }
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
         let tappedNodes = nodes(at: location)
         
         bulletsLeft -= 1
-        
         for node in tappedNodes {
-            guard let targetSlot = node.parent as? TargetSlot else { return }
-            
-            if node.name == "good" {
-                score += 1
-            } else if node.name == "bad" {
-                score -= 1
+            if node.name == "bullets" && bulletsLeft <= 0 {
+                print("hello")
+                bulletsLeft = 6
+                return
             }
+            
+            guard let targetSlot = node.parent as? TargetSlot else { return }
+            if node.name == "good" {
+                score -= 1
+            } else if node.name == "bad" {
+                score += 1
+            }
+            
             
             targetSlot.removeEnemy()
             targetSlot.removeFromParent()
@@ -126,6 +163,7 @@ class GameScene: SKScene {
             //            print(slots.count)
             
         }
+        
     }
     
     func createTarget(at position: CGPoint, row: Int, texture: SKTexture, trait: String, scale: CGFloat, endpoint: CGPoint){
@@ -135,7 +173,7 @@ class GameScene: SKScene {
         addChild(slot)
         slots.append(slot)
         let speed = CGFloat(moveSpeedDistribution.nextInt())
-        let moveObject = SKAction.move(to: endpoint, duration: getDuration(pointA: slot.position, pointB:endpoint, speed:speed))
+        let moveObject = SKAction.move(to: endpoint, duration: getDuration(pointA: slot.position, pointB: endpoint, speed: speed))
         if gameInProgress == false {
             slot.removeAllActions()
         } else {
@@ -155,27 +193,27 @@ class GameScene: SKScene {
         case 1:
             texture = brownDuckTexture
             trait = "good"
-            scale = 0.2
+            scale = 1
         case 2:
-            texture = duckTexture
+            texture = elephantTexture
             trait = "good"
-            scale = 0.2
+            scale = 1
         case 3:
             texture = frogTexture
             trait = "good"
-            scale = 0.4
+            scale = 1
         case 4:
-            texture = crocodileTexture
+            texture = pufferFishTexture
             trait = "bad"
-            scale = 0.3
+            scale = 1
         case 5:
             texture = posionAppleTexture
             trait = "bad"
-            scale = 0.2
+            scale = 1
         case 6:
             texture = targetTexture
             trait = "bad"
-            scale = 0.2
+            scale = 1
         default:
             return
         }
@@ -222,36 +260,36 @@ class GameScene: SKScene {
             }
         }
     }
-        
-//    func moveTargets(){
-//        for (index, element) in slots.enumerated() {
-//            if element.position .x >= 1150 || element.position .x <= -650 {
-//                element.removeEnemy()
-//                element.removeFromParent()
-//                slots.remove(at: index)
-//            } else {
-//                let moveSpeed: Int = element.moveSpeed
-//                let moveSpeedNegative: Int = -moveSpeed
-//                let moveSpeedFloat = CGFloat(moveSpeed)
-//                let moveSpeedFloatNegative = CGFloat(moveSpeedNegative)
-//
-//                if element.row == 1 || element.row == 3 {
-////                    element.run(SKAction.speed(by: 1, duration: 20))
-//                    element.run(SKAction.moveBy(x: 1500, y: 0, duration: 20.0))
-//                } else {
-////                    element.run(SKAction.speed(by: 1, duration: 20))
-//                    element.run(SKAction.moveBy(x: -1500, y: 0, duration: 20.0))
-//                }
-//            }
-//        }
-//
-//        if gameInProgress == true {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-//                [weak self] in
-//                self?.moveTargets()
-//            }
-//        }
-//    }
+    
+    //    func moveTargets(){
+    //        for (index, element) in slots.enumerated() {
+    //            if element.position .x >= 1150 || element.position .x <= -650 {
+    //                element.removeEnemy()
+    //                element.removeFromParent()
+    //                slots.remove(at: index)
+    //            } else {
+    //                let moveSpeed: Int = element.moveSpeed
+    //                let moveSpeedNegative: Int = -moveSpeed
+    //                let moveSpeedFloat = CGFloat(moveSpeed)
+    //                let moveSpeedFloatNegative = CGFloat(moveSpeedNegative)
+    //
+    //                if element.row == 1 || element.row == 3 {
+    ////                    element.run(SKAction.speed(by: 1, duration: 20))
+    //                    element.run(SKAction.moveBy(x: 1500, y: 0, duration: 20.0))
+    //                } else {
+    ////                    element.run(SKAction.speed(by: 1, duration: 20))
+    //                    element.run(SKAction.moveBy(x: -1500, y: 0, duration: 20.0))
+    //                }
+    //            }
+    //        }
+    //
+    //        if gameInProgress == true {
+    //            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+    //                [weak self] in
+    //                self?.moveTargets()
+    //            }
+    //        }
+    //    }
     
     @objc func onTimerFires() {
         timeLeft -= 1
@@ -265,7 +303,7 @@ class GameScene: SKScene {
     func gameOver() {
         gameInProgress = false
         
-        for (index, element) in slots.enumerated() {
+        for (_, element) in slots.enumerated() {
             element.removeAllActions()
         }
         
@@ -280,11 +318,5 @@ class GameScene: SKScene {
         finalScoreLabel.fontSize = 48
         finalScoreLabel.zPosition = 1
         addChild(finalScoreLabel)
-    }
-
-    @objc func reloadBullets() {
-        
-        bulletsLeft = 6
-        
     }
 }
