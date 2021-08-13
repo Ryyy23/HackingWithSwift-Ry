@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5716577A26C4ACD700134D35 /* Capital.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716577926C4ACD700134D35 /* Capital.swift */; };
+		5716577C26C5EB8700134D35 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5716577B26C5EB8700134D35 /* WebViewController.swift */; };
 		577CB3AE260B2EB700161D19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577CB3AD260B2EB700161D19 /* AppDelegate.swift */; };
 		577CB3B0260B2EB700161D19 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577CB3AF260B2EB700161D19 /* SceneDelegate.swift */; };
 		577CB3B2260B2EB700161D19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577CB3B1260B2EB700161D19 /* ViewController.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5716577926C4ACD700134D35 /* Capital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capital.swift; sourceTree = "<group>"; };
+		5716577B26C5EB8700134D35 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		577CB3AA260B2EB700161D19 /* Project16.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project16.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		577CB3AD260B2EB700161D19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		577CB3AF260B2EB700161D19 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 				577CB3AD260B2EB700161D19 /* AppDelegate.swift */,
 				577CB3AF260B2EB700161D19 /* SceneDelegate.swift */,
 				577CB3B1260B2EB700161D19 /* ViewController.swift */,
+				5716577B26C5EB8700134D35 /* WebViewController.swift */,
+				5716577926C4ACD700134D35 /* Capital.swift */,
 				577CB3B3260B2EB700161D19 /* Main.storyboard */,
 				577CB3B6260B2EB800161D19 /* Assets.xcassets */,
 				577CB3B8260B2EB800161D19 /* LaunchScreen.storyboard */,
@@ -139,6 +145,8 @@
 			files = (
 				577CB3B2260B2EB700161D19 /* ViewController.swift in Sources */,
 				577CB3AE260B2EB700161D19 /* AppDelegate.swift in Sources */,
+				5716577A26C4ACD700134D35 /* Capital.swift in Sources */,
+				5716577C26C5EB8700134D35 /* WebViewController.swift in Sources */,
 				577CB3B0260B2EB700161D19 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -293,7 +301,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project16;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ry.Project16;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -312,7 +320,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Project16;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ry.Project16;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
