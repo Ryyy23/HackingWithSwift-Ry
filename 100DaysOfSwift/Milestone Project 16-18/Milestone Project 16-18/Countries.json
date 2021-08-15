@@ -1,0 +1,44 @@
+{
+  "country" : [
+    {
+      "countryName" : "Australia",
+      "capitalCity" : "Canberra",
+      "size" : 7692024,
+      "population" : 25846900,
+      "currency" : "Australia Dollar",
+      "fact" : "Is the best country in the world"
+    },
+    {
+      "countryName" : "New Zealand",
+      "capitalCity" : "Wellington",
+      "size" : 268021,
+      "population" : 5128490,
+      "currency" : "New Zealand Dollar",
+      "fact" : "the home to lord of the rings"
+    },
+    {
+      "countryName" : "United States of America",
+      "capitalCity" : "Washington DC",
+      "size" : 9833520,
+      "population" : 331449281,
+      "currency" : "United States Dollar",
+      "fact" : "The number one for everything in the world"
+    },
+    {
+      "countryName" : "United Kingdom",
+      "capitalCity" : "London",
+      "size" : 242495,
+      "population" : 67886004,
+      "currency" : "Pound Sterling",
+      "fact" : "Queen Lizzies home"
+    },
+    {
+      "countryName" : "Canada",
+      "capitalCity" : "Ottawa",
+      "size" : 9984670,
+      "population" : 38131104,
+      "currency" : "Canadian Dollar",
+      "fact" : "I'm Sorry"
+    }
+  ]
+}
