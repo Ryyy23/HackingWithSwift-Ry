@@ -35,7 +35,6 @@ class ViewController: UITableViewController {
         super.viewDidLoad()
         
         GetUserDefualts()
-        
         // View Title
         title = "Storm Viewer"
         

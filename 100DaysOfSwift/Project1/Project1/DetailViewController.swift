@@ -18,6 +18,9 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        selectedImage?.removeAll()
+//        assert(selectedImage == nil, "No images to display")
+        
         // View Title
         title = "Picture \(selectedPictureNumber) of \(totalPictures)"
 
