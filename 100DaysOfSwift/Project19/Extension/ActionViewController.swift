@@ -24,10 +24,10 @@ class ActionViewController: UIViewController {
         let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(savePopUp))
         navigationItem.leftBarButtonItems = [add, share]
 //        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(savePopUp))
-        
-        guard let userDefaults = getUserDefaults() else { return }
-        savedWebsites = userDefaults
-        
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let userDefaults = self.getUserDefaults() else { return }
+            self.savedWebsites = userDefaults
+        }
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
