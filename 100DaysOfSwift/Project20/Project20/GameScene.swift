@@ -15,11 +15,14 @@ class GameScene: SKScene {
     let bottomEdge = -22
     let rightEdge = 1024 + 22
     
+    var scoreLabel: SKLabelNode!
     var score = 0 {
         didSet {
+            scoreLabel.text = "Score: \(score)"
             
         }
     }
+    var numberOfLaunches = 0
     
     override func didMove(to view: SKView) {
         let background = SKSpriteNode(imageNamed: "background")
@@ -27,6 +30,14 @@ class GameScene: SKScene {
         background.blendMode = .replace
         background.zPosition = -1
         addChild(background)
+        
+        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel.position = CGPoint(x: 20, y: 20)
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.zPosition = 1
+        addChild(scoreLabel)
+        
+        score = 0
         
         gameTimer = Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(launchFireworks), userInfo: nil, repeats: true)
         
@@ -69,7 +80,7 @@ class GameScene: SKScene {
     
     @objc func launchFireworks() {
         let movementAmount: CGFloat = 1800
-        
+        countFireworkLunches()
         switch Int.random(in: 0...3) {
         case 0:
             // fire five, straight up
@@ -162,8 +173,16 @@ class GameScene: SKScene {
         if let emitter = SKEmitterNode(fileNamed: "explode") {
             emitter.position = firework.position
             addChild(emitter)
+            
+            emitter.run(
+                SKAction.sequence(
+                    [
+                        SKAction.wait(forDuration: 1.0),
+                        SKAction.removeFromParent()
+                    ])
+            )
+            firework.removeFromParent()
         }
-        firework.removeFromParent()
     }
     
     func explodeFireworks() {
@@ -193,6 +212,15 @@ class GameScene: SKScene {
         default:
             score += 4000
         }
+    }
+    
+    func countFireworkLunches() {
+        numberOfLaunches += 1
+        print(numberOfLaunches)
+        if numberOfLaunches == 1 {
+            gameTimer?.invalidate()
+        }
+        
     }
     
 }
