@@ -6,7 +6,7 @@
 //  Copyright © 2020 Ryordan Panter. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 class Person: NSObject, Codable {
     
