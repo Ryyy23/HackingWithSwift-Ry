@@ -372,7 +372,7 @@ class GameScene: SKScene {
             enemy = SKSpriteNode(imageNamed: "penguin")
             run(SKAction.playSoundFileNamed("launch", waitForCompletion: false))
             enemy.name = "enemy"
-            
+             
         }
         
         // position code goes here
